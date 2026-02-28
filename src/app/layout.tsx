@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
+import ThemeProvider from "@/components/ThemeProvider";
 
 const notoSansKR = Noto_Sans_KR({
   subsets: ["latin"],
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f97316",
+  themeColor: "#8b7355",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -33,13 +34,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko">
+    <html lang="ko" suppressHydrationWarning>
       <head>
         <link rel="apple-touch-icon" href="/icon-192.svg" />
       </head>
       <body className={`${notoSansKR.className} antialiased`}>
-        <Header />
-        <main className="max-w-lg mx-auto px-4 py-8">{children}</main>
+        <ThemeProvider>
+          <div className="max-w-lg mx-auto min-h-screen border-x-[1.5px] border-[#d4cdc4] dark:border-[#2e2a26] shadow-[0_0_24px_rgba(0,0,0,0.06)] dark:shadow-[0_0_24px_rgba(0,0,0,0.5)] bg-white/50 dark:bg-[#181614]/60">
+            <Header />
+            <main className="px-5 py-10">{children}</main>
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );

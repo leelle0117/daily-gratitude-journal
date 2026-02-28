@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
-import { getEntry, saveEntry } from "@/lib/firestore";
+import { saveEntry } from "@/lib/firestore";
 
 export default function GratitudeForm() {
   const today = format(new Date(), "yyyy-MM-dd");
@@ -12,30 +12,11 @@ export default function GratitudeForm() {
   });
 
   const [lines, setLines] = useState(["", "", ""]);
-  const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState<{
     message: string;
     type: "success" | "error";
   } | null>(null);
-  const [isEdit, setIsEdit] = useState(false);
-
-  useEffect(() => {
-    async function fetchToday() {
-      try {
-        const entry = await getEntry(today);
-        if (entry) {
-          setLines([entry.line1, entry.line2, entry.line3]);
-          setIsEdit(true);
-        }
-      } catch {
-        // 연결 실패 시 조용히 실패
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchToday();
-  }, [today]);
 
   const showToast = useCallback(
     (message: string, type: "success" | "error") => {
@@ -77,7 +58,6 @@ export default function GratitudeForm() {
         line3: lines[2].trim(),
       });
       setLines(["", "", ""]);
-      setIsEdit(false);
       showToast("감사일기가 저장되었습니다!", "success");
     } catch {
       showToast("저장에 실패했습니다. 다시 시도해주세요.", "error");
@@ -93,17 +73,6 @@ export default function GratitudeForm() {
   ];
 
   const labels = ["First", "Second", "Third"];
-
-  if (loading) {
-    return (
-      <div className="flex flex-col items-center gap-4 py-20">
-        <div className="w-6 h-6 border-2 border-[#d4cdc4] dark:border-[#3d3833] border-t-[#8b7355] dark:border-t-[#c4b48a] rounded-full animate-spin" />
-        <p className="text-xs text-[#b8b0a4] dark:text-[#6b6560]">
-          불러오는 중...
-        </p>
-      </div>
-    );
-  }
 
   return (
     <div>
