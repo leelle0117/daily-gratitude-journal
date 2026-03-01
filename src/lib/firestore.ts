@@ -1,12 +1,20 @@
 import { getSupabase } from "./supabase";
 import { GratitudeEntry, GratitudeFormData } from "@/types";
 
+async function getUserId(): Promise<string> {
+  const { data: { user } } = await getSupabase().auth.getUser();
+  if (!user) throw new Error("로그인이 필요합니다");
+  return user.id;
+}
+
 export async function saveEntry(
   date: string,
   formData: GratitudeFormData
 ): Promise<void> {
+  const user_id = await getUserId();
   const { error } = await getSupabase().from("entries").insert({
     date,
+    user_id,
     ...formData,
   });
 

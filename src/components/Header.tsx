@@ -3,10 +3,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "./ThemeProvider";
+import { useAuth } from "./AuthProvider";
 
 export default function Header() {
   const pathname = usePathname();
   const { theme, toggle } = useTheme();
+  const { user, signOut } = useAuth();
 
   return (
     <header className="sticky top-0 z-50 bg-[#faf9f7]/80 dark:bg-[#141210]/80 backdrop-blur-md border-b-[1.5px] border-[#d4cdc4] dark:border-[#2e2a26]">
@@ -67,6 +69,14 @@ export default function Header() {
               </>
             )}
           </button>
+          {user && (
+            <button
+              onClick={signOut}
+              className="ml-1 px-2.5 py-1.5 rounded-lg text-[11px] font-medium text-[#9e9790] dark:text-[#6b6560] hover:bg-[#eae6e0] dark:hover:bg-[#2e2a26] transition-colors cursor-pointer"
+            >
+              로그아웃
+            </button>
+          )}
         </div>
       </nav>
     </header>

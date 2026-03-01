@@ -3,6 +3,7 @@ import { Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import ThemeProvider from "@/components/ThemeProvider";
+import AuthProvider from "@/components/AuthProvider";
 
 const notoSansKR = Noto_Sans_KR({
   subsets: ["latin"],
@@ -40,10 +41,12 @@ export default function RootLayout({
       </head>
       <body className={`${notoSansKR.className} antialiased`}>
         <ThemeProvider>
-          <div className="max-w-lg mx-auto min-h-screen border-x-[1.5px] border-[#d4cdc4] dark:border-[#2e2a26] shadow-[0_0_24px_rgba(0,0,0,0.06)] dark:shadow-[0_0_24px_rgba(0,0,0,0.5)] bg-white/50 dark:bg-[#181614]/60">
-            <Header />
-            <main className="px-5 py-10">{children}</main>
-          </div>
+          <AuthProvider>
+            <div className="max-w-lg mx-auto min-h-screen border-x-[1.5px] border-[#d4cdc4] dark:border-[#2e2a26] shadow-[0_0_24px_rgba(0,0,0,0.06)] dark:shadow-[0_0_24px_rgba(0,0,0,0.5)] bg-white/50 dark:bg-[#181614]/60">
+              <Header />
+              <main className="px-5 py-10">{children}</main>
+            </div>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

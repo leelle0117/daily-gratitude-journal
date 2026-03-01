@@ -4,6 +4,7 @@ export interface GratitudeEntry {
   line2: string;
   line3: string;
   date: string; // "YYYY-MM-DD"
+  user_id?: string;
   created_at?: string;
   updated_at?: string;
 }
